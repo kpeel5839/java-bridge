@@ -295,6 +295,146 @@ Width, Height 를 독립적으로 변경할 수 있다는 직사각형의 사후
 ### 🤡 I
 - Interface Segregation Principle (ISP)
 
+인터페이스 분리 원칙이다.
+
+이것은 비교적 쉬운 원칙이다.
+
+인터페이스를 구성할 때에 있어서 너무 포괄적으로 하지말고 세부적으로 구성하라는 것이다.
+
+이번에도 바로 예를 들어보겠다.
+
+만일 고양이와 강아지가 있고 고양이는 움직일 수 있고, 짖지는 못한다고 해보자.
+
+강아지는 움직일 수도 있고, 짖을 수도 있어야 한다.
+
+근데 만일 움직이는 것과 짖는 것을 같은 인터페이스에 구성하면? 어떻게 될까?
+
+한번 진행해보자.
+
+```java
+public class Test {
+    public interface AnimalAction {
+        void bark(); // 짖는 메소드
+        
+        void move(); // 움직이는 메소드
+    } 
+    
+    public class Dog implements AnimalAction {
+        
+        int nowLocate;
+        
+        public Dog() {
+            nowLocate = 0;
+        }
+        
+        @Override
+        public void bark() {
+            System.out.println("멍멍!");
+        }
+        
+        @Override
+        public void move() {
+            nowLocate++;
+        }
+    }
+    
+    public class Cat implements AnimalAction {
+        
+        int nowLocate;
+        
+        public Dog() {
+            nowLocate = 0;
+        }
+        
+        @Override
+        public void bark() {
+        }
+        
+        @Override
+        public void move() {
+            nowLocate++;
+        }
+    }
+    
+    public void main(String[] args) {
+        Cat cat = new Cat();
+        Dog dog = new Dog();
+        
+        dog.bark();
+        dog.move();
+
+        cat.bark(); // 심지어 의미 없는 구문
+        cat.move();
+    }
+}
+```
+
+이런 현상이 발발하게 된다.
+
+bark 를 사용하지 못하는데 bark 까지 구현해야 하기 때문에 내부 구현을 하지 않았다.
+
+이런 것은 깔끔하지 않다. 어떻게 수정할 수 있을까?
+
+```java
+public class Test {
+    public interface Sound {
+        void bark(); // 짖는 메소드
+    }
+    
+    public interface Action {
+        void move();
+    }
+
+    public class Dog implements Sound, Action {
+
+        int nowLocate;
+
+        public Dog() {
+            nowLocate = 0;
+        }
+
+        @Override
+        public void bark() {
+            System.out.println("멍멍!");
+        }
+
+        @Override
+        public void move() {
+            nowLocate++;
+        }
+    }
+
+    public class Cat implements Action {
+
+        int nowLocate;
+
+        public Dog() {
+            nowLocate = 0;
+        }
+
+        @Override
+        public void move() {
+            nowLocate++;
+        }
+    }
+
+    public void main(String[] args) {
+        Cat cat = new Cat();
+        Dog dog = new Dog();
+
+        dog.bark();
+        dog.move();
+        cat.move();
+    }
+}
+```
+
+인터페이스의 작명이 맘에 들지는 않지만, 대충 이렇게 할 수 있을 것 같다.
+
+세부적으로 해도 되는 이유는? 인터페이스는 다중 상속이 가능하기 때문이다.
+
+그래서 이렇게 인터페이스를 세부적으로 분리하게 되었을 때 얻는 이점을 다루어보았다.
+
 
 ### 🤡 D
 - Dependency Inversion Principle (DIP)
