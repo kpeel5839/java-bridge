@@ -408,7 +408,7 @@ public class Test {
 
         int nowLocate;
 
-        public Dog() {
+        public Cat() {
             nowLocate = 0;
         }
 
