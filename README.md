@@ -192,6 +192,105 @@ public class Test {
 ### 🤡 L
 - Liskov Substitution Principle (LSP)
 
+해석 하면 리스코프 치환 원칙이다.
+
+이게 가장 어려운 개념이 아닐까 싶다.
+
+이 원칙을 한마디로 정리하면, 하위 모듈은 상위 모듈로 치환, 즉 캐스팅이 가능해야한다는 것이다.
+
+개념으로만 보면 되게 모호한 것 같다. 그리고 사실 내가 잘 이해한지도 잘 모르겠다.
+
+그래도 LSP 의 가장 대표적인 예로 드는 직사각형, 정사각형 문제를 예제대로 다루면 조금 이해가 가지 않을까 싶다.
+
+LSP 에 위반하는 경우
+
+```java
+public class Test {
+    public class Rectangle {
+        private int height; // 세로
+        private int width; // 가로
+        
+        public Rectangle(int height, int width) {
+            this.height = height;
+            this.width = width;
+        }
+        
+        public void setHeight(int height) {
+            this.height = height;
+        }
+        
+        public void setWidth(int width) {
+            this.width = width;
+        }
+        
+        public int getHeight() {
+            return this.height;
+        }
+        
+        public int getWidth() {
+            return this.width;
+        }
+    }
+    
+    public class Square extends Rectangle {
+        public Square(int size) {
+            super(size, size);
+        }
+        
+        public void setSize(int size) {
+            super.setHeight(size);
+            super.setWidth(size);
+        } // ??
+        
+        public int getSize() {
+            return super.getHeight();
+        }
+    }
+    
+    public void main(String[] args) {
+        Square square = new Square(7);
+        Rectangle rectangle = square;
+    }
+}
+```
+
+구현하면서 애초에 말이 안된다는 것을 깨달았다.
+
+애초에 정사각형은 Width == Height 이다.
+
+근데 setHeight, setWidth 가 있는 것은 말이 안된다.
+
+그리고 무엇인가 getHeight, getWidth 가 따로 있는 것도 이상하다는 생각이 들지만, 그래도 이것은 수용할 수 있는 정도이다.
+
+위 코드는 돌아가긴 한다.
+
+근데 여기서 포인트는 이렇게 하는 것이 과연 맞냐는 것이다.
+
+직사각형은 독립적으로 Height, Width 를 변환시킬 수 있다는 조건이 있다.
+
+근데 정사각형은 그 사후조건을 위반하게 된다.
+
+그래서 LSP 위반이라고 할 수 있고, 이 LSP 위반은 실제로 하게 되었을 때, 문제가 될 수 있고, 되지 않을 수도 있다.
+
+문제가 되지 않을 수도 있지만, 원칙으로 존재한다는 것은 굉장히 중요한 원칙이기 때문이라는 생각이 들긴한다.
+
+그렇기 때문에 이 원칙도 최대한 지키는 것이 좋을 것 같다.
+
+그리고 여기서 해결할 수 있는 방법은 그냥 getter, setter 중 getter 만 두면 문제는 해결된다.
+
+Width, Height 를 독립적으로 변경할 수 있다는 직사각형의 사후조건을 Setter 를 사용하지 않음으로서 위반할 일이 없는 것이다.
+
+즉, 이 문제는 불변객체로 Rectangle, Square 를 불변 객체로 만든다면? LSP 를 위반하지 않는 것이다.
+
+그리고 또 좋은 예로 들 수 있을 것 같은 것이 Robot 객체가 있다고 하고 그것을 상속받는 AiRobot 이 있다고 가정해보자.
+
+또 여기서 기존에 Robot 의 Size 가 10 * 10 이고, 이것을 이용해서 연산을 수행했던 코드들이 있었다고도 가정해보자.
+
+이 경우에 AiRobot 에 기능을 너무 많이 넣어서 Size 가 20 * 20 이 되었다고 했을 떄, 분명히 애플리케이션을 수행하게 되면 예외를 발생시킬 것이다.
+
+기존 메소드의 구동 조건에 맞지 않기 때문인 것이다. 즉, 위에서 예로 들은 사후조건에 맞지 않는 것이다.
+
+이 예를 통해서, 위에서 말하지 못한 LSP 를 지키지 못했을 때 문제가 되는 경우를 알 수 있을 것 같다.
 
 ### 🤡 I
 - Interface Segregation Principle (ISP)
