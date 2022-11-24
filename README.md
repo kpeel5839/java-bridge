@@ -1,37 +1,120 @@
 # 미션 - 다리 건너기
 
-## 🔍 진행 방식
+## 👍 다시 해보는 연습!
+- 객체 지향 구조에 대해서 너무 무지하고 있던 자신이 통탄스러워 다시 해본다.
+- SOLID 기본 원칙에 의거하여 찐하게 해보자!
 
-- 미션은 **기능 요구 사항, 프로그래밍 요구 사항, 과제 진행 요구 사항** 세 가지로 구성되어 있다.
-- 세 개의 요구 사항을 만족하기 위해 노력한다. 특히 기능을 구현하기 전에 기능 목록을 만들고, 기능 단위로 커밋 하는 방식으로 진행한다.
-- 기능 요구 사항에 기재되지 않은 내용은 스스로 판단하여 구현한다.
+## 🤔 SOLID 는 무엇일까?
+### 🤡 S
+- Single Responsibility Principle (SRP)
 
-## 📮 미션 제출 방법
+단일 책임 원칙이라고 칭한다.
 
-- 미션 구현을 완료한 후 GitHub을 통해 제출해야 한다.
-    - GitHub을 활용한 제출 방법은 [프리코스 과제 제출](https://github.com/woowacourse/woowacourse-docs/tree/master/precourse) 문서를 참고해
-      제출한다.
-- GitHub에 미션을 제출한 후 [우아한테크코스 지원](https://apply.techcourse.co.kr) 사이트에 접속하여 프리코스 과제를 제출한다.
-    - 자세한 방법은 [제출 가이드](https://github.com/woowacourse/woowacourse-docs/tree/master/precourse#제출-가이드) 참고
-    - **Pull Request만 보내고 지원 플랫폼에서 과제를 제출하지 않으면 최종 제출하지 않은 것으로 처리되니 주의한다.**
+핵심은 모든 클래스는 하나의 책임만을 가지며, 클래스는 그 책임을 완전히 캡슐화해야 함을 일컫는다.
 
-## 🚨 과제 제출 전 체크 리스트 - 0점 방지
+결과적으로 클래스를 변경하는 이유는 단 한가지여야 한다는 것이다.
 
-- 기능 구현을 모두 정상적으로 했더라도 **요구 사항에 명시된 출력값 형식을 지키지 않을 경우 0점으로 처리**한다.
-- 기능 구현을 완료한 뒤 아래 가이드에 따라 테스트를 실행했을 때 모든 테스트가 성공하는지 확인한다.
-- **테스트가 실패할 경우 0점으로 처리**되므로, 반드시 확인 후 제출한다.
+클래스가 제공하는 모든 기능은 이 책임과 주의 깊게 부합해야 한다.
 
-### 테스트 실행 가이드
+프리코스 중 가장 중시하였던 원칙인 것 같다.
 
-- 터미널에서 `java -version`을 실행하여 Java 버전이 11인지 확인한다. 또는 Eclipse 또는 IntelliJ IDEA와 같은 IDE에서 Java 11로 실행되는지 확인한다.
-- 터미널에서 Mac 또는 Linux 사용자의 경우 `./gradlew clean test` 명령을 실행하고,   
-  Windows 사용자의 경우  `gradlew.bat clean test` 명령을 실행할 때 모든 테스트가 아래와 같이 통과하는지 확인한다.
+아무래도 단칙 책임 원칙을 지키게 되면 유지보수가 편해지고, 즉 기능을 변경하기가 쉬워지는 장점때문인 것 같다. 
 
+단일 책임 원칙을 설명할 수 있는 예를 한번 들어보자.
+
+자동차가 있다고 가정해보자.
+
+자동차에는 Seat, Heater, Handle ... 등등이 있을 것이다.
+
+그리고서 이 모든 것들을 합쳐놓으면 Car 가 되는 것이다.
+
+만일 이 경우 나머지 Seat, Heater 등을 나누지 않고 Car 로만 해결하게 된다면?
+
+Car 는 기능이 너무 방대해지고, 책임이 모호해질 것이다.
+
+그렇게 되면 위에서 말했던 유지보수, 기능 변경에 용의하다는 장점을 얻을 수 없는 것이다.
+
+그래서 SRP 를 지켜야 하는 것이다.
+
+### 🤡 O
+- Open/Closed Principle (OCP)
+
+이것은 개방 폐쇄 원칙이다.
+
+개방 폐쇄의 원칙이 의미하는 바는 이름에서부터 알 수 있듯이 확장에는 열려있고, 수정에는 닫혀있는 것이다.
+
+이 규칙을 지키게 된다면? 기능 추가 혹은 수정에 굉장히 용이할 것이다.
+
+이것도 예를 한번 들어보자.
+
+만약 Animal 이라는 클래스가 있고, 거기에 sound() 라는 각 동물들의 울음소리를 내는 메소드가 있다고 가정해보자.
+
+만일, if/else 조건문으로 분기하는 경우 이것이 위배될 수 있다.
+
+```java
+public class Animal {
+    public void sound(String animalName) { // 간단히 animalName 이라고 칭하자.
+        if (animalName.equals("dog")) {
+            System.out.println("멍멍");
+        } else if (animalName.equals("cat")) {
+            System.out.println("야옹");
+        } // 등등 더
+    }
+}
 ```
-BUILD SUCCESSFUL in 0s
+
+이렇게 있다고 했을 때, 만일 동물의 종류가 늘어난다고 하면 계속해서, Animal Class 를 변경해야 하는 일이 생기게 된다.
+
+그래서 이런 경우는 오버라이딩을 통해서 해결할 수 있다.
+
+```java
+public class Test {
+    public abstract class Animal {
+          abstract void sound();
+    }
+    
+    public class Dog extends Animal {
+        @Override
+        public void sound() {
+            System.out.println("멍멍");
+        }
+    }
+    
+    public class Cat extends Animal {
+        @Override
+        public void sound() {
+            System.out.println("야용");
+        }
+    }
+    
+    public static void main(String[] args) {
+        Animal dog = new Dog();
+        Animal cat = new Cat();
+        
+        dog.sound();
+        cat.sound();
+    }
+}
 ```
 
----
+이런식으로 구조를 설계하게 되면, 실제로 동물의 종류가 추가되더라도 기존 코드들은 수정하지 않으면서, 기능 추가, 수정에 대한 확장성은 좋아지는 효과를 얻을 수 있다.
+
+### 🤡 L
+- Liskov Substitution Principle (LSP)
+
+
+### 🤡 I
+- Interface Segregation Principle (ISP)
+
+
+### 🤡 D
+- Dependency Inversion Principle (DIP)
+
+
+## 🤔 OOP 의 4가지 특징은 뭘까?
+
+
+
 
 ## 🚀 기능 요구 사항
 위아래 둘 중 하나의 칸만 건널 수 있는 다리를 끝까지 건너가는 게임이다.
@@ -184,110 +267,3 @@ Q
   - else를 쓰지 말라고 하니 switch/case로 구현하는 경우가 있는데 switch/case도 허용하지 않는다.
 - 도메인 로직에 단위 테스트를 구현해야 한다. 단, UI(System.out, System.in, Scanner) 로직은 제외한다.
   - 핵심 로직을 구현하는 코드와 UI를 담당하는 로직을 분리해 구현한다.
-
-### 추가된 요구 사항
-
-- 함수(또는 메서드)의 길이가 10라인을 넘어가지 않도록 구현한다.
-  - 함수(또는 메서드)가 한 가지 일만 잘하도록 구현한다.
-- 메서드의 파라미터 개수는 최대 3개까지만 허용한다.
-- 아래 있는 `InputView`, `OutputView`, `BridgeGame`, `BridgeMaker`, `BridgeRandomNumberGenerator` 클래스의 요구사항을 참고하여 구현한다.
-  - 각 클래스의 제약 사항은 아래 클래스별 세부 설명을 참고한다.
-  - 이외 필요한 클래스(또는 객체)와 메서드는 자유롭게 구현할 수 있다.
-  - `InputView` 클래스에서만 `camp.nextstep.edu.missionutils.Console` 의 `readLine()` 메서드를 이용해 사용자의 입력을 받을 수 있다.
-  - `BridgeGame` 클래스에서 `InputView`, `OutputView` 를 사용하지 않는다.
-
-### InputView 클래스
-- 제공된 `InputView` 클래스를 활용해 구현해야 한다.
-- `InputView`의 패키지는 변경할 수 있다.
-- `InputView`의 메서드의 시그니처(인자, 이름)와 반환 타입은 변경할 수 있다.
-- 사용자 값 입력을 위해 필요한 메서드를 추가할 수 있다.
-```java
-public class InputView {
-
-    public int readBridgeSize() {
-        return 0;
-    }
-
-    public String readMoving() {
-        return null;
-    }
-
-    public String readGameCommand() {
-        return null;
-    }
-}
-```
-### OutputView 클래스
-- 제공된 `OutputView` 클래스를 활용해 구현해야 한다.
-- `OutputView`의 패키지는 변경할 수 있다.
-- `OutputView`의 메서드의 이름은 변경할 수 없고, 인자와 반환 타입은 필요에 따라 추가하거나 변경할 수 있다.
-- 값 출력을 위해 필요한 메서드를 추가할 수 있다.
-```java
-public class OutputView {
-
-    public void printMap() {
-    }
-
-    public void printResult() {
-    }
-}
-```
-
-### BridgeGame 클래스
-- 제공된 `BridgeGame` 클래스를 활용해 구현해야 한다.
-- `BridgeGame`에 필드(인스턴스 변수)를 추가할 수 있다.
-- `BridgeGame`의 패키지는 변경할 수 있다.
-- `BridgeGame`의 메서드의 이름은 변경할 수 없고, 인자와 반환 타입은 필요에 따라 추가하거나 변경할 수 있다.
-- 게임 진행을 위해 필요한 메서드를 추가 하거나 변경할 수 있다.
-
-```java
-public class BridgeGame {
-
-    public void move() {
-    }
-
-    public void retry() {
-    }
-}
-```
-
-### BridgeMaker 클래스
-- 제공된 `BridgeMaker` 클래스를 활용해 구현해야 한다.
-- `BridgeMaker`의 필드(인스턴스 변수)를 변경할 수 없다.
-- `BridgeMaker`의 메서드의 시그니처(인자, 이름)와 반환 타입은 변경할 수 없다.
-```java
-public class BridgeMaker {
-
-    public List<String> makeBridge(int size) {
-        return null;
-    }
-}
-```
-
-### BridgeRandomNumberGenerator 클래스
-
-- Random 값 추출은 제공된 `bridge.BridgeRandomNumberGenerator`의 `generate()`를 활용한다.
-- `BridgeRandomNumberGenerator`, `BridgeNumberGenerator` 클래스의 코드는 변경할 수 없다.
-
-#### 사용 예시
-
-- 다리 칸을 생성하기 위한 Random 값은 아래와 같이 추출한다.
-
-```java
-int number = bridgeNumberGenerator.generate();
-``` 
-
-### 라이브러리
-
-- [`camp.nextstep.edu.missionutils`](https://github.com/woowacourse-projects/mission-utils)에서 제공하는 `Console` API를 사용하여 구현해야 한다.
-  - 사용자가 입력하는 값은 `camp.nextstep.edu.missionutils.Console`의 `readLine()`을 활용한다.
-
----
-
-## ✏️ 과제 진행 요구 사항
-
-- 미션은 [java-bridge](https://github.com/woowacourse-precourse/java-bridge) 저장소를 Fork & Clone해 시작한다.
-- **기능을 구현하기 전 `docs/README.md`에 구현할 기능 목록을 정리**해 추가한다.
-- **Git의 커밋 단위는 앞 단계에서 `docs/README.md`에 정리한 기능 목록 단위**로 추가한다.
-    - [커밋 메시지 컨벤션](https://gist.github.com/stephenparish/9941e89d80e2bc58a153) 가이드를 참고해 커밋 메시지를 작성한다.
-- 과제 진행 및 제출 방법은 [프리코스 과제 제출](https://github.com/woowacourse/woowacourse-docs/tree/master/precourse) 문서를 참고한다.
