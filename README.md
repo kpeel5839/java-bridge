@@ -75,15 +75,15 @@ public class Test {
         private Handle handle;
     
         public Car() {
-          this.heater = new Heater();
-          this.seat = new Seat();
-          this.handle = new Handle();
+            this.heater = new Heater();
+            this.seat = new Seat();
+            this.handle = new Handle();
         }
     
         public void initialSetUp() {
-          heater.initialSetUp();
-          seat.initialSetUp();
-          handle.initialSetUp();
+            heater.initialSetUp();
+            seat.initialSetUp();
+            handle.initialSetUp();
         }
     }
   
@@ -91,8 +91,8 @@ public class Test {
         private int angleOfSeat;
     
         public void initialSetUp() {
-          angleOfSeat = 105;
-          System.out.println("의자 각도 : " + angleOfSeat);
+            angleOfSeat = 105;
+            System.out.println("의자 각도 : " + angleOfSeat);
         }
     }
   
@@ -100,8 +100,8 @@ public class Test {
         private int temperatureOfHeater;
     
         public void initialSetUp() {
-          temperatureOfHeater = 25;
-          System.out.println("히터 온도 : " + temperatureOfHeater);
+            temperatureOfHeater = 25;
+            System.out.println("히터 온도 : " + temperatureOfHeater);
         }
     }
   
@@ -321,7 +321,7 @@ public class Test {
     
     public class Dog implements AnimalAction {
         
-        int nowLocate;
+        private int nowLocate;
         
         public Dog() {
             nowLocate = 0;
@@ -340,7 +340,7 @@ public class Test {
     
     public class Cat implements AnimalAction {
         
-        int nowLocate;
+        private int nowLocate;
         
         public Dog() {
             nowLocate = 0;
@@ -387,7 +387,7 @@ public class Test {
 
     public class Dog implements Sound, Action {
 
-        int nowLocate;
+        private int nowLocate;
 
         public Dog() {
             nowLocate = 0;
@@ -406,7 +406,7 @@ public class Test {
 
     public class Cat implements Action {
 
-        int nowLocate;
+        private int nowLocate;
 
         public Cat() {
             nowLocate = 0;
@@ -439,5 +439,159 @@ public class Test {
 ### 🤡 D
 - Dependency Inversion Principle (DIP)
 
+의존 역전 원칙이다.
+
+나무 위키에서 따온 설명은 이러하다
+
+https://ko.wikipedia.org/wiki/%EC%9D%98%EC%A1%B4%EA%B4%80%EA%B3%84_%EC%97%AD%EC%A0%84_%EC%9B%90%EC%B9%99
+
+첫째, 상위 모듈은 하위 모듈에 의존해서는 안된다. 상위 모듈과 하위 모듈 모두 추상화에 의존해야 한다.
+
+둘째, 추상화는 세부 사항에 의존해서는 안된다. 세부사항이 추상화에 의존해야 한다.
+
+이 말은 이렇게 이해할 수 있을 것 같다.
+
+상위 모듈은 하위 모듈을 참조하면 안되는 것이고, 추상화는 세부 사항을 가져서는 안된다.
+
+즉, 상위 모듈은 최대한 적은 단위의 정보를 가지고 있어야 한다.
+
+큰 정의를 말이다.
+
+소를 추상화 시킨다고 생각해보자.
+
+다른 사이트의 되게 좋은 추상화 그림을 보여주겠다.
+
+출처 : https://storygrid.com/969/
+![img.png](img.png)
+
+보면 알 수 있듯이 소를 추상화하게 되면 결국에는 정말 뼈대만 남는 것이다.
+
+의존 역전 원칙의 특성을 굉장히 잘 드러내주는 것 같다.
+
+추상화는 세부 사항을 가져서는 안된다는 것, 세부사항이 추상화에 의존해야 한다는 것
+
+그리고 상위 모듈과 하위 모듈 모두 추상화에 의존하고, 상위 모듈은 하위 모듈에 의존해서는 안된다는 것이 있다.
+
+여기서도 예를 한번 들어보자.
+
+만일, 토끼라는 클래스가 있는데
+
+먹이가 Carrot 이 있다.
+
+그 경우 Strawberry 로 먹이가 변경되었다고 가정했을 때 이런 상황이 발생할 수 있다.
+
+이 예제는 첫번째 원칙에 중심을 두고 있는 것 같다.
+
+세부사항은 추상화에 의존해야 한다는 것, 더 높은 상위 개념에 의존해야 한다는 사실 말이다.
+
+```java
+public class Test {
+    public class Carrot {
+        private int satiety;
+
+        public Carrot() {
+            this.satiety = 50;
+        }
+
+        public int getSatiety() {
+            return this.satiety;
+        }
+    }
+    
+    public class Strawberry {
+        private int satiety;
+        
+        public Strawberry() {
+            this.satiety = 40;
+        }
+        
+        public int getSatiety() {
+            return this.satiety;
+        }
+    }
+
+    public class Rabbit {
+
+        private int satiety;
+//        private Carrot carrot; 캐럿을 바꾸어야함
+        private Strawberry strawberry;
+
+        public Rabit() {
+            satiety = 0;
+            strawberry = new StrawBerry();
+        }
+
+        public void eatFeed() {
+            satiety += strawberry.getSatiety();
+        }
+    }
+    
+    public void main(String[] args) {
+        Rabbit rabbit = new Rabbit();
+        rabbit.eatFeed();
+    }
+}
+```
+
+괜히 먹이 인스턴스 변수를 두개나 두어야 한다.
+
+하지만 Vegetable 을 두면 어떨까?
+
+```java
+public class Test {
+    public abstract class Vegetable {
+        private int satiety;
+        
+        public Vegetable(int satiety) {
+            this.satiety = satiety;
+        }
+        
+        public abstract int getSatiety;
+    }
+    
+    public class Carrot extends Vegetable {
+        public Carrot() {
+            super(50);
+        }
+
+        public int getSatiety() {
+            return super.getSatiety();
+        }
+    }
+    
+    public class Strawberry extends Vegetable {
+        public Strawberry() {
+            super(40);
+        }
+        
+        public int getSatiety() {
+            return super.getSatiety();
+        }
+    }
+    
+    public class Rabbit {
+        private int satiety;
+        private Vegetable feed;
+        
+        public Rabbit(Strawberry strawberry) {
+            this.satiety = 0;
+            this.feed = strawberry;
+        }
+        
+        public void eatFeed() {
+            this.satiety += this.feed.getSatiety;
+        }
+    }
+    
+    public void main(String[] args) {
+        Rabbit rabbit = new Rabbit(new Strawberry());
+        rabbit.eatFeed();
+    }
+}
+```
+
+이렇게 하게 되면, 실제로 Rabbit 내부 객체를 변경하지 않아도 생성자로 넘겨주기만 하면, 먹이를 변경할 수도 있다.
+
+이런식으로 의존 역전 원칙은 추상화에 더 의지하고, 상위 모듈이 하위 모듈에 의존하지 않으면서, 이것 역시 다른 원칙들과 동일하게 기능 추가, 수정이 더 수월해지도록 해준다.
 
 ## 🤔 OOP 의 4가지 특징은 뭘까?
