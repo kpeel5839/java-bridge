@@ -493,7 +493,7 @@ public class Test {
             this.satiety = 50;
         }
 
-        public int getSatiety() {
+        public int extractNutritive() {
             return this.satiety;
         }
     }
@@ -505,7 +505,7 @@ public class Test {
             this.satiety = 40;
         }
         
-        public int getSatiety() {
+        public int extractNutritive() {
             return this.satiety;
         }
     }
@@ -522,7 +522,8 @@ public class Test {
         }
 
         public void eatFeed() {
-            satiety += strawberry.getSatiety();
+            satiety += strawberry.ex();
+            System.out.println(satiety);
         }
     }
     
@@ -541,48 +542,55 @@ public class Test {
 public class Test {
     public abstract class Vegetable {
         private int satiety;
-        
+
         public Vegetable(int satiety) {
             this.satiety = satiety;
         }
-        
-        public abstract int getSatiety;
+
+        public int getSatiety() {
+            return this.satiety;
+        }
+
+        public abstract int extractNutritive();
     }
-    
+
     public class Carrot extends Vegetable {
         public Carrot() {
             super(50);
         }
 
-        public int getSatiety() {
+        @Override
+        public int extractNutritive() {
             return super.getSatiety();
         }
     }
-    
+
     public class Strawberry extends Vegetable {
         public Strawberry() {
             super(40);
         }
-        
-        public int getSatiety() {
+
+        @Override
+        public int extractNutritive() {
             return super.getSatiety();
         }
     }
-    
+
     public class Rabbit {
         private int satiety;
         private Vegetable feed;
-        
-        public Rabbit(Strawberry strawberry) {
+
+        public Rabbit(Vegetable feed) {
             this.satiety = 0;
-            this.feed = strawberry;
+            this.feed = feed;
         }
-        
+
         public void eatFeed() {
-            this.satiety += this.feed.getSatiety;
+            this.satiety += feed.extractNutritive();
+            System.out.println(satiety);
         }
     }
-    
+
     public void main(String[] args) {
         Rabbit rabbit = new Rabbit(new Strawberry());
         rabbit.eatFeed();
