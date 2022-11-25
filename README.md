@@ -4,6 +4,216 @@
 - 객체 지향 구조에 대해서 너무 무지하고 있던 자신이 통탄스러워 다시 해본다.
 - SOLID 기본 원칙에 의거하여 찐하게 해보자!
 
+# 🤔 OOP 가 뭐야?
+
+OOP 란 Object Oriented Programming 을 의미한다.
+
+즉, 객체 지향 프로그래밍이다.
+
+너무나도 많이 들은 말이다.
+
+하지만, 코드를 구성함에 있어서 가장 중요한 특징이고, 완벽하게 알기란 어렵다.
+
+이렇게 정리하여 끝마쳐도 분명히 완벽하게 이해하지도 못하고, 당연히 완벽하게 적용하지도 못할 것이다.
+
+하지만, 이 개념에 대해서 다시 한번 상기해보면서 OOP 를 적용할 수 있도록 노력해보도록 하자. 
+
+## 🤔 OOP 의 4가지 특징은 뭘까?
+
+OOP 에는 4가지 특징이 있다.
+
+Encapsulation (캡슐화), Data Abstraction (추상화), Inheritance (상속화), Polymorphism (다형성) 이다.
+
+여기서 하나하나 설명해보겠다.
+
+- Encapsulation (캡슐화)
+
+캡슐화는 이미 단어에서부터 오는 느낌 그대로이다.
+
+내부에 있는 정보를 보호하겠다는 의미이다.
+
+```java
+public class Encapsulation {
+    private int instance;
+
+    public Encapsulation(int instance) {
+        this.instance = instance;
+    }
+    
+    public int getInstance() {
+        return this.instance;
+    }
+    
+    public void setInstance(int instance) {
+        this.instance = instance;
+    }
+}
+```
+
+이와 같이, instance 변수에 직접 접근하는 것이 아닌, getter 와 setter 로 접근하는 것
+
+만일 객체가 위와 같은 메소드를 제공하지 않는다면? 외부에서 인스턴스 변수에 접근할 방법이 없고, 이것은 곧 안정성과 연결된다.
+
+- Data Abstraction (추상화)
+
+앞으로 설명할 것인데, 추상화란 클래스들의 공통적인 특성(변수, 메소드) 를 묶어 놓은 것을 의미한다.
+
+이것을 묶어 놓으면 좋은 점은, 불필요한 코드의 중복도 없어지고, 클래스들을 종류별로 묶을 수 있는 역할도 한다.
+
+만일 나를 추상화하게 되면, 개인적으로 가지고 있는 특성들을 다 제거하여 인간이라는 추상적인 개념으로 변할 것이다.
+
+그리고 이 인간이라는 추상적인 개념에서 모든 사람들로 뻗어 나갈 수 있다.
+
+이렇게 보더라도 바로 이점이 드러나는 것 같다.
+
+에제로도 한번 정리해보자.
+
+```java
+public class Computer {
+    
+    abstract void display();
+    abstract void typing();
+    
+    public void turnOn() {
+        System.out.println("전원을 켭니다.");
+    }
+    
+    public void turnOff() {
+        System.out.println("전원을 끕니다.");
+    }
+}
+
+public class Desktop extends Computer {
+    
+    @Override
+    public void display() {
+        System.out.println("Desktop Typing");
+    }
+    
+    @Override
+    public void typing() {
+        System.out.println("Desktop Typing");
+    }
+}
+
+public class NoteBook extends Computer {
+
+    @Override
+    public void display() {
+        System.out.println("NoteBook display");
+    }
+
+    @Override
+    public void typing() {
+        System.out.println("NoteBook Typing");
+    }
+}
+```
+
+이런 식으로 말이다.
+
+- Inheritance (상속화)
+
+상속이란, 자식 클래스가 부모 클래스가 가진 모든 것을 물려받는 것을 말한다.
+
+그냥 정말 부모가 아이를 낳는데, 조금 더 강하게 연결되어 있다고 생각하면 된다.
+
+예제를 한번 보자.
+
+```java
+public class Parent {
+    public void inheritance() {
+        System.out.println("부모 클래스 메소드");
+    }
+}
+
+public class Child extends Parent {
+    public void main(String[] args) {
+        Child child = new Child();
+        child.inheritance();
+    }
+}
+```
+
+이런 식으로 자식은 부모의 메소드, 인스턴스를 물려받는다.
+
+- Polymorphism (다형성)
+
+객체 지향의 가장 강력한 부분이다.
+
+다형성을 가지게끔 해주는 기능들은 바로 여기에 있다.
+
+1. 오버라이딩
+2. 오버로딩
+
+오버라이딩은 상속받은 클래스의 메소드를 다시 정의하여서, 실제로 동일한 클래스더라도 어떤 유형의 객체를 가지고 있냐에 따라서 메소드의 동작이 달라진다.
+
+예제를 한번 봐보자.
+
+```java
+public abstract class Animal {
+    abstract void sound();
+}
+
+public class Dog extends Animal {
+    
+    @Override
+    public void sound() {
+        System.out.println("멍멍!");
+    } 
+}
+
+public class Cat extends Animal {
+    
+    @Override
+    public void sound() {
+        System.out.println("야옹");
+    }
+}
+
+public class Main {
+    public void main(String[] args) {
+        Animal[] animals = new Animal[] {new Dog(), new Cat()};
+        
+        for (Animal animal : animals) {
+            animal.sound();
+        }
+    }
+}
+```
+
+이렇게 하면 멍멍, 야옹이 나온다.
+
+너무나도 기똥찬 기능이다.
+
+오버로딩은 조금 더 쉽다.
+
+```java
+public class Main {
+    public int add(int first, int second) {
+        System.out.println("add two numbers");
+        return first + second;
+    }
+    
+    public int add(int first, int second, int third) {
+        System.out.println("add three numbers");
+        return first + second + third;
+    }
+    
+    public void main(String[] args) {
+        System.out.println(add(1, 2));
+        System.out.println(add(1, 2, 3));
+    }
+}
+```
+
+이렇게 반환형, 혹은 인자의 개수의 따라, 즉 메소드 시그니처에 따라서 다른 메소드로 취급하는 것이 오버로딩이다.
+
+4가지의 특징들을 예제와 함께 정리해보았다.
+
+그러면 이제 이 특징들을 기반으로 세워진 5가지 원칙 SOLID 에 대해서 알아보자.
+
+
 ## 🤔 SOLID 는 무엇일까?
 ### 🤡 S
 - Single Responsibility Principle (SRP)
@@ -601,5 +811,3 @@ public class Test {
 이렇게 하게 되면, 실제로 Rabbit 내부 객체를 변경하지 않아도 생성자로 넘겨주기만 하면, 먹이를 변경할 수도 있다.
 
 이런식으로 의존 역전 원칙은 추상화에 더 의지하고, 상위 모듈이 하위 모듈에 의존하지 않으면서, 이것 역시 다른 원칙들과 동일하게 기능 추가, 수정이 더 수월해지도록 해준다.
-
-## 🤔 OOP 의 4가지 특징은 뭘까?
